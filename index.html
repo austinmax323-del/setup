@@ -220,11 +220,33 @@
 	</div>
 
 	<div class="card">
-		<h3>Apple Music</h3>
+		<h3>Apple Music <span class="tag">neutralized</span></h3>
 		<p>
-			Left installed. It lives at <code>/System/Applications/Music.app</code> on the sealed
-			system volume, so deleting it means disabling SIP and breaking the volume seal — a
-			permanent tradeoff to remove one icon. It just never gets to launch.
+			Left installed — it lives at <code>/System/Applications/Music.app</code> on the sealed
+			system volume, so deleting it means disabling SIP and breaking the volume seal, a
+			permanent tradeoff to remove one icon. Instead,
+			<strong>Vorsaint's Music App Stopper</strong> intercepts its launches, and the media key
+			is routed to open Spotify.
+		</p>
+	</div>
+</section>
+
+<section>
+	<h2>Notch</h2>
+
+	<div class="card">
+		<h3>Sapphire <span class="tag">2.3</span></h3>
+		<p>
+			Turns the MacBook notch into a Dynamic Island: now-playing art, a live audio pill,
+			battery and charge limit, per-app volume and EQ, Bluetooth proximity unlock.
+			<code>defaultMusicPlayer</code> is set to Spotify.
+		</p>
+		<p class="note">
+			Synced lyrics come from <a href="https://lrclib.net">LRCLIB</a>, shown as one inline line
+			in the compact activity and beneath the artwork in the expanded player. They are gated on
+			playback being active, <code>showLyricsInLiveActivity</code>, a per-app allow list
+			(<code>musicAppStates</code>, which excludes browsers by default), and a lyric line
+			existing at the current timestamp.
 		</p>
 	</div>
 </section>
