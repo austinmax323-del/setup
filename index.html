@@ -250,9 +250,12 @@ notchSize          = compact</code></pre>
 			that instead.
 		</p>
 		<div class="gotcha">
-			<strong>Two notch apps cannot share one notch.</strong> Running Sapphire alongside this
-			meant both drew into the same cutout, and the one with lyrics lost. If the island looks
-			wrong, check nothing else is claiming it before debugging the app itself.
+			<strong>Vorssaint blanks its own cutout when another window sits in the status-window
+			level band.</strong> Its menu-bar measurement counts any window with layer in
+			<code>[statusWindow, statusWindow+1]</code> that is narrower than the screen and no
+			taller than the menu bar as menu-bar occupancy — and never checks where the window
+			actually is vertically. Losing that "safe center" hides the album art and audio pill
+			entirely. An overlay two levels higher is invisible to the check.
 		</div>
 		<p class="note">
 			<a href="https://github.com/vorssaint/vorssaint-utils">github.com/vorssaint/vorssaint-utils</a>
