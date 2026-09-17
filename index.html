@@ -250,12 +250,13 @@ notchSize          = compact</code></pre>
 			that instead.
 		</p>
 		<div class="gotcha">
-			<strong>Vorssaint blanks its own cutout when another window sits in the status-window
-			level band.</strong> Its menu-bar measurement counts any window with layer in
-			<code>[statusWindow, statusWindow+1]</code> that is narrower than the screen and no
-			taller than the menu bar as menu-bar occupancy — and never checks where the window
-			actually is vertically. Losing that "safe center" hides the album art and audio pill
-			entirely. An overlay two levels higher is invisible to the check.
+			<strong>The cutout sometimes goes empty while a small always-on-top window is running,
+			and the cause is still unknown.</strong> The album art and audio pill vanished
+			repeatedly here and came back when the overlay exited. The obvious explanation —
+			<code>NotchMenuBarSpace</code> counting the overlay as menu-bar occupancy — is wrong:
+			<code>NotchMenuBarLayout.sideRoom</code> already discards anything that does not reach
+			the bar. A rerun with the frontmost app held constant showed no difference at all, so
+			the earlier comparison was measuring something else.
 		</div>
 		<p class="note">
 			<a href="https://github.com/vorssaint/vorssaint-utils">github.com/vorssaint/vorssaint-utils</a>
@@ -269,7 +270,8 @@ notchSize          = compact</code></pre>
 			and a tab. Vorssaint's resting notch is <code>none | battery | music</code>, with no
 			lyrics case in the enum at all. This is a click-through strip pinned under the cutout so
 			the current line is simply always there: Spotify over AppleScript for position, LRCLIB
-			for the words.
+			for the words. It sits above the status-window level band, which was a guess at a
+			conflict that turned out not to exist — harmless, but not a fix for anything.
 		</p>
 		<p class="note">
 			<a href="https://github.com/austinmax323-del/notch-lyrics">github.com/austinmax323-del/notch-lyrics</a>
