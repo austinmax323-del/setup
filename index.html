@@ -235,18 +235,27 @@
 	<h2>Notch</h2>
 
 	<div class="card">
-		<h3>Sapphire <span class="tag">2.3</span></h3>
+		<h3>Vorssaint <span class="tag">3.4.0-beta</span></h3>
 		<p>
-			Turns the MacBook notch into a Dynamic Island: now-playing art, a live audio pill,
-			battery and charge limit, per-app volume and EQ, Bluetooth proximity unlock.
-			<code>defaultMusicPlayer</code> is set to Spotify.
+			Open-source menu bar toolkit (GPL-3.0) that also drives the notch as a Dynamic Island:
+			now-playing art and controls, synced lyrics with a per-track timing offset, battery
+			detail, per-app volume, clipboard and capture shelves.
 		</p>
+		<pre><code>notchEnabled       = true     notchLyricsEnabled = true
+notchIdleContent   = music    notchLyricsOnline  = true
+notchSize          = compact</code></pre>
 		<p class="note">
-			Synced lyrics come from <a href="https://lrclib.net">LRCLIB</a>, shown as one inline line
-			in the compact activity and beneath the artwork in the expanded player. They are gated on
-			playback being active, <code>showLyricsInLiveActivity</code>, a per-app allow list
-			(<code>musicAppStates</code>, which excludes browsers by default), and a lyric line
-			existing at the current timestamp.
+			Its Music App Stopper is what keeps Apple Music from launching itself, with
+			<code>musicBlockReplacementPath</code> pointed at Spotify so the media key opens
+			that instead.
+		</p>
+		<div class="gotcha">
+			<strong>Two notch apps cannot share one notch.</strong> Running Sapphire alongside this
+			meant both drew into the same cutout, and the one with lyrics lost. If the island looks
+			wrong, check nothing else is claiming it before debugging the app itself.
+		</div>
+		<p class="note">
+			<a href="https://github.com/vorssaint/vorssaint-utils">github.com/vorssaint/vorssaint-utils</a>
 		</p>
 	</div>
 </section>
