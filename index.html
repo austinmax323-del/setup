@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup &amp; Mods</title>
+<meta name="description" content="How this Mac is set up: client mods, audio routing, local AI tooling, and the gotchas behind each one.">
+<style>
+	:root {
+		--bg: #0b0d12;
+		--panel: #12151d;
+		--line: #222736;
+		--fg: #e7e9f0;
+		--muted: #8b91a6;
+		--accent: #7c6cf0;
+		--accent-2: #46c2a6;
+		--warn: #e0a458;
+		--mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+	}
+
+	* { box-sizing: border-box; }
+
+	body {
+		margin: 0;
+		background:
+			radial-gradient(1100px 620px at 78% -8%, #1a1836 0%, transparent 62%),
+			var(--bg);
+		color: var(--fg);
+		font: 16px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.wrap { max-width: 860px; margin: 0 auto; padding: 72px 20px 96px; }
+
+	header { margin-bottom: 56px; }
+
+	h1 {
+		font-size: clamp(30px, 6vw, 44px);
+		line-height: 1.1;
+		letter-spacing: -0.02em;
+		margin: 0 0 14px;
+	}
+
+	.sub { color: var(--muted); max-width: 60ch; margin: 0; }
+
+	.meta {
+		margin-top: 20px;
+		font-family: var(--mono);
+		font-size: 12.5px;
+		color: var(--muted);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 18px;
+	}
+
+	section { margin-bottom: 44px; }
+
+	h2 {
+		font-size: 13px;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--accent-2);
+		margin: 0 0 18px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.card {
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		padding: 20px 22px;
+		margin-bottom: 14px;
+	}
+
+	.card h3 {
+		margin: 0 0 4px;
+		font-size: 17px;
+		letter-spacing: -0.01em;
+	}
+
+	.card h3 .tag {
+		font-family: var(--mono);
+		font-size: 11px;
+		font-weight: 500;
+		color: var(--muted);
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		padding: 2px 8px;
+		margin-left: 8px;
+		vertical-align: 2px;
+	}
+
+	.card p { margin: 8px 0 0; color: #c3c8d8; }
+	.card p.note { color: var(--muted); font-size: 14.5px; }
+
+	ul { margin: 10px 0 0; padding-left: 18px; color: #c3c8d8; }
+	li { margin: 5px 0; }
+
+	code {
+		font-family: var(--mono);
+		font-size: 13px;
+		background: #1b2030;
+		border: 1px solid var(--line);
+		border-radius: 5px;
+		padding: 1px 6px;
+	}
+
+	pre {
+		font-family: var(--mono);
+		font-size: 13px;
+		background: #0e111a;
+		border: 1px solid var(--line);
+		border-radius: 9px;
+		padding: 14px 16px;
+		overflow-x: auto;
+		margin: 12px 0 0;
+		color: #cfd5e6;
+	}
+
+	pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+	a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+	a:hover { border-bottom-color: var(--accent); }
+
+	.gotcha {
+		border-left: 2px solid var(--warn);
+		background: #191509;
+		border-radius: 0 8px 8px 0;
+		padding: 12px 16px;
+		margin-top: 14px;
+		font-size: 14.5px;
+		color: #ddd0b4;
+	}
+
+	.gotcha strong { color: var(--warn); font-weight: 600; }
+
+	.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+
+	.grid .card { margin: 0; }
+
+	footer {
+		margin-top: 64px;
+		padding-top: 22px;
+		border-top: 1px solid var(--line);
+		color: var(--muted);
+		font-size: 14px;
+	}
+
+	@media (max-width: 560px) { .wrap { padding: 48px 16px 72px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+	<h1>Setup &amp; mods</h1>
+	<p class="sub">
+		What runs on this Mac and why — client mods, audio routing, and local AI tooling.
+		Each entry includes the part that actually cost time to figure out, because the
+		install command is never the hard bit.
+	</p>
+	<div class="meta">
+		<span>MacBook Air · Apple Silicon</span>
+		<span>macOS 26.3.1</span>
+		<span>Homebrew</span>
+		<span>zsh</span>
+	</div>
+</header>
+
+<section>
+	<h2>Spotify</h2>
+
+	<div class="card">
+		<h3>Spicetify <span class="tag">2.45.1</span></h3>
+		<p>Patches the Spotify desktop client to load custom apps, extensions and themes.</p>
+		<ul>
+			<li><strong>Marketplace</strong> — browse and install extensions, themes, snippets</li>
+			<li><strong>backmusic</strong> — visualizer, patched to run on real audio (below)</li>
+			<li><strong>hide-npv.js</strong> — closes the right-hand Now Playing panel at startup</li>
+			<li><strong>auto-fullscreen-visualizer.js</strong> — opens the visualizer fullscreen when playback starts</li>
+		</ul>
+		<div class="gotcha">
+			<strong>After any Spotify update,</strong> <code>spicetify apply</code> silently does
+			nothing and prints <em>"Preprocessed Spotify data is outdated"</em>. The real fix is
+			<code>spicetify restore backup apply</code>. The same applies when removing a custom
+			app — a plain apply leaves its <code>spicetify-routes-*</code> files behind.
+		</div>
+		<div class="gotcha">
+			<strong><code>expose_apis = 0</code> renders the entire client blank</strong> —
+			<code>ReferenceError: Spicetify is not defined</code>. The patched modules reference a
+			global that never gets injected. It must be <code>1</code>.
+		</div>
+		<div class="gotcha">
+			<strong><code>custom_apps</code> is pipe-separated.</strong>
+			<code>spicetify config custom_apps a,b</code> writes one broken entry, and reading the
+			value back gives one app per <em>line</em> — collapsing that output fuses the names
+			together.
+		</div>
+	</div>
+
+	<div class="card">
+		<h3>spicetify-audio-bridge <span class="tag">mine</span></h3>
+		<p>
+			Spotify removed the <code>audio-analysis</code> endpoint its client exposed, so every
+			Spicetify visualizer built on <code>Spicetify.getAudioData()</code> quietly fell back to
+			a decorative mode — a fixed <code>Math.sin(now/700)</code> cycle. Measured on two
+			different tracks, the rings peaked every 4393 ms and 4356 ms: a clock, not the music.
+		</p>
+		<p>
+			Spotify's renderer also ships without a microphone entitlement, so no extension can
+			capture audio to make up for it — <code>getUserMedia</code> returns
+			<em>"Permission denied by system"</em>. The fix is to capture outside Spotify and draw
+			inside it: a local process reads a loopback device, computes the FFT, and streams frames
+			over a WebSocket to the patched visualizer.
+		</p>
+		<p class="note">
+			<a href="https://github.com/austinmax323-del/spicetify-audio-bridge">github.com/austinmax323-del/spicetify-audio-bridge</a>
+		</p>
+	</div>
+
+	<div class="card">
+		<h3>Apple Music</h3>
+		<p>
+			Left installed. It lives at <code>/System/Applications/Music.app</code> on the sealed
+			system volume, so deleting it means disabling SIP and breaking the volume seal — a
+			permanent tradeoff to remove one icon. It just never gets to launch.
+		</p>
+	</div>
+</section>
+
+<section>
+	<h2>Audio routing</h2>
+
+	<div class="card">
+		<h3>BlackHole 2ch + Multi-Output</h3>
+		<p>
+			BlackHole is a virtual loopback driver: audio sent to it reappears as an
+			<em>input</em>, which is the only way anything on macOS can read system sound. A
+			Multi-Output Device (headphones + BlackHole) sends audio to both at once, so the
+			visualizer can listen without muting anything.
+		</p>
+		<pre><code>SwitchAudioSource -a -t output              # list
+SwitchAudioSource -s "Multi-Output Device"  # switch
+SwitchAudioSource -c -t output              # current</code></pre>
+		<div class="gotcha">
+			<strong>While a Multi-Output Device is selected the volume keys stop working</strong> —
+			set the level first. macOS also flips the default output back when AirPods reconnect,
+			which silently starves anything reading the loopback.
+		</div>
+		<div class="gotcha">
+			<strong>A process denied microphone access receives digital silence, not an error.</strong>
+			Exactly-zero samples on a live input means a TCC denial, and permission is attributed to
+			the <em>parent</em> app — a script inherits the terminal's grant, not its own.
+		</div>
+	</div>
+</section>
+
+<section>
+	<h2>Discord</h2>
+
+	<div class="card">
+		<h3>Vencord <span class="tag">built from source</span></h3>
+		<p>
+			Client mod injected into the desktop app, built locally rather than installed from a
+			release, so plugins can be modified and rebuilt.
+		</p>
+		<p class="note">
+			Enabled plugins include AlwaysTrust, BetterRoleContext, BetterSessions, BetterSettings,
+			BetterUploadButton, BiggerStreamPreview, BlurNSFW, CallTimer, CharacterCounter,
+			ClientTheme, CustomCommands, Experiments, NoTrack, PermissionViewer and CrashHandler.
+		</p>
+	</div>
+</section>
+
+<section>
+	<h2>iOS tinkering</h2>
+
+	<div class="grid">
+		<div class="card">
+			<h3>theos</h3>
+			<p>Build system for iOS tweaks. <code>$THEOS</code> is exported from <code>.zshrc</code> with <code>$THEOS/bin</code> on PATH.</p>
+		</div>
+		<div class="card">
+			<h3>Sideloadly</h3>
+			<p>Sideloads <code>.ipa</code> builds onto a device without the App Store.</p>
+		</div>
+		<div class="card">
+			<h3>ldid</h3>
+			<p>Signs and inspects Mach-O entitlements — the piece that makes sideloaded builds actually launch.</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h2>Local AI tooling</h2>
+
+	<div class="card">
+		<h3>Ollama</h3>
+		<p>Local models, coding-focused:</p>
+		<ul>
+			<li><code>qwen3-coder:30b</code> — 18 GB, the heavy one</li>
+			<li><code>starcoder2:7b</code>, <code>deepseek-coder:6.7b</code> — 4 GB class</li>
+			<li><code>qwen2.5-coder</code> 3b / 7b — small and fast</li>
+		</ul>
+	</div>
+
+	<div class="grid">
+		<div class="card">
+			<h3>Claude Code</h3>
+			<p>Terminal and desktop agent. Extended with MCP servers and skills.</p>
+		</div>
+		<div class="card">
+			<h3>Codex CLI</h3>
+			<p>Second opinion / rescue passes on stuck work.</p>
+		</div>
+		<div class="card">
+			<h3>Cursor · OpenCode</h3>
+			<p>Editor-side agents for longer refactors.</p>
+		</div>
+		<div class="card">
+			<h3>Desktop Commander</h3>
+			<p>Persistent shells, REPLs and filesystem access beyond one workspace.</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h2>System</h2>
+
+	<div class="grid">
+		<div class="card">
+			<h3>Ice</h3>
+			<p>Menu bar manager — hides the overflow macOS refuses to.</p>
+		</div>
+		<div class="card">
+			<h3>Bitwarden</h3>
+			<p>Credentials, so nothing lives in a dotfile.</p>
+		</div>
+		<div class="card">
+			<h3>Cloudflare WARP</h3>
+			<p>Network layer.</p>
+		</div>
+		<div class="card">
+			<h3>Colima + Docker</h3>
+			<p>Containers without Docker Desktop.</p>
+		</div>
+	</div>
+
+	<div class="card">
+		<h3>Shell</h3>
+		<p>zsh, with PATH assembled in <code>.zshrc</code>:</p>
+		<pre><code>export THEOS=$HOME/theos
+export PATH=$THEOS/bin:$PATH
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"</code></pre>
+		<div class="gotcha">
+			<strong>Homebrew's Python is externally managed (PEP 668).</strong>
+			<code>pip3 install</code> into it fails by design — every project gets a
+			<code>venv</code>, or it gets <code>pipx</code>.
+		</div>
+	</div>
+</section>
+
+<footer>
+	Not exhaustive — a few things are deliberately left off this page.
+</footer>
+
+</div>
+</body>
+</html>
