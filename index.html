@@ -230,6 +230,30 @@
 	</div>
 
 	<div class="card">
+		<h3>LateNight <span class="tag">theme, mine</span></h3>
+		<p>
+			A Spicetify color scheme grounded in this library's own covers — channel ORANGE,
+			NOBLE, SPLINTER — rather than a generic dark-and-purple reskin. Near-black with a warm
+			brown undertone, cream text, and Spotify's green identity replaced everywhere with a
+			burnt amber pulled straight from those album arts.
+		</p>
+		<div class="gotcha">
+			<strong>Spotify runs two separate per-page tinting mechanisms</strong>, and
+			<code>color.ini</code> reaches neither. Older pages set a literal inline
+			<code>background-color: rgb(...)</code> extracted from the cover art; newer ones
+			("Encore" tokens) set <code>--background-base</code> inline and paint a
+			<code>linear-gradient(in oklch, ...)</code> from it. Both need their own
+			<code>!important</code> override in <code>user.css</code> — fixing one left the other's
+			pages randomly tinted.
+		</div>
+		<div class="gotcha">
+			<strong>Don't strip backgrounds indiscriminately.</strong> Artist pages use a real
+			photo as the hero banner, not a synthetic color layer — the fix only targets the two
+			known tinting selectors, so actual photography is left alone.
+		</div>
+	</div>
+
+	<div class="card">
 		<h3>Apple Music <span class="tag">neutralized</span></h3>
 		<p>
 			Left installed — it lives at <code>/System/Applications/Music.app</code> on the sealed
