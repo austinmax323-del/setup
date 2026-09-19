@@ -197,6 +197,16 @@
 			value back gives one app per <em>line</em> — collapsing that output fuses the names
 			together.
 		</div>
+		<div class="gotcha">
+			<strong>Skipping repeats a small handful of tracks, even on a huge playlist.</strong>
+			Confirmed independent of Spicetify: it reproduces from raw <code>Spicetify.Player.next()</code>
+			calls, and the internal queue (<code>PlayerAPI._queue._queueState</code>) sat at
+			<code>nextUp: 0, queued: 0</code> the whole time — Spotify's own queue-builder had
+			stalled rather than pulling in more tracks. Turning off Autoplay and clearing the local
+			cache both held under test and neither fixed it. What did: unliking a few recently-added
+			Liked Songs — one bad track (removed, region-locked, whatever) was likely choking the
+			rebuild before it ever reached the rest of the library.
+		</div>
 	</div>
 
 	<div class="card">
