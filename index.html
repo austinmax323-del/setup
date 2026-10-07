@@ -147,6 +147,25 @@
 		font-size: 14px;
 	}
 
+	.toc { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+	.toc a {
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--muted);
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		padding: 3px 11px;
+	}
+	.toc a:hover { color: var(--fg); border-color: var(--accent); }
+
+	section { scroll-margin-top: 24px; }
+
+	table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14.5px; }
+	th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+	th { color: var(--muted); font-weight: 500; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.08em; }
+	td:first-child { white-space: nowrap; }
+	.tbl { overflow-x: auto; }
+
 	@media (max-width: 560px) { .wrap { padding: 48px 16px 72px; } }
 </style>
 </head>
@@ -161,14 +180,30 @@
 		install command is never the hard bit.
 	</p>
 	<div class="meta">
-		<span>MacBook Air · Apple Silicon</span>
+		<span>MacBook Air · Apple M2</span>
 		<span>macOS 26.3.1</span>
-		<span>Homebrew</span>
+		<span>Homebrew · 206 formulae</span>
 		<span>zsh</span>
 	</div>
+	<nav class="toc">
+		<a href="#spotify">Spotify</a>
+		<a href="#notch">Notch</a>
+		<a href="#audio">Audio</a>
+		<a href="#discord">Discord</a>
+		<a href="#ios">iOS</a>
+		<a href="#ai">AI &amp; agents</a>
+		<a href="#languages">Languages</a>
+		<a href="#security">Security</a>
+		<a href="#containers">Containers</a>
+		<a href="#media">Media</a>
+		<a href="#apps">Apps</a>
+		<a href="#services">Services</a>
+		<a href="#shell">Shell</a>
+		<a href="#projects">Projects</a>
+	</nav>
 </header>
 
-<section>
+<section id="spotify">
 	<h2>Spotify</h2>
 
 	<div class="card">
@@ -265,7 +300,7 @@
 	</div>
 </section>
 
-<section>
+<section id="notch">
 	<h2>Notch</h2>
 
 	<div class="card">
@@ -313,7 +348,7 @@ notchSize          = compact</code></pre>
 	</div>
 </section>
 
-<section>
+<section id="audio">
 	<h2>Audio routing</h2>
 
 	<div class="card">
@@ -340,7 +375,7 @@ SwitchAudioSource -c -t output              # current</code></pre>
 	</div>
 </section>
 
-<section>
+<section id="discord">
 	<h2>Discord</h2>
 
 	<div class="card">
@@ -357,7 +392,7 @@ SwitchAudioSource -c -t output              # current</code></pre>
 	</div>
 </section>
 
-<section>
+<section id="ios">
 	<h2>iOS tinkering</h2>
 
 	<div class="grid">
@@ -376,41 +411,186 @@ SwitchAudioSource -c -t output              # current</code></pre>
 	</div>
 </section>
 
-<section>
-	<h2>Local AI tooling</h2>
+<section id="ai">
+	<h2>AI &amp; agents</h2>
 
 	<div class="card">
-		<h3>Ollama</h3>
-		<p>Local models, coding-focused:</p>
+		<h3>Ollama <span class="tag">no models pulled</span></h3>
+		<p>
+			Installed as both the CLI (Homebrew) and the app (cask), serving on
+			<code>localhost:11434</code>. <code>~/.ollama/models</code> is empty right now — the
+			coding models this page used to list (qwen3-coder 30b, starcoder2, deepseek-coder,
+			qwen2.5-coder) are gone, so <code>ollama pull</code> before relying on any of them.
+		</p>
+	</div>
+
+	<div class="card">
+		<h3>Claude Code <span class="tag">primary agent</span></h3>
+		<p>Terminal and desktop agent, set up with:</p>
 		<ul>
-			<li><code>qwen3-coder:30b</code> — 18 GB, the heavy one</li>
-			<li><code>starcoder2:7b</code>, <code>deepseek-coder:6.7b</code> — 4 GB class</li>
-			<li><code>qwen2.5-coder</code> 3b / 7b — small and fast</li>
+			<li><strong>Plugins</strong> — superpowers, github, context7, codex, hookify, pr-review-toolkit, claude-code-setup, security-guidance</li>
+			<li><strong>Language servers</strong> — pyright, typescript, rust-analyzer, swift</li>
+			<li><strong>Custom agents</strong> — critic, workspace-builder, workspace-reviewer, and Python / Rust / Swift / TypeScript reviewers</li>
+			<li><strong>Skills</strong> — Swift concurrency and SwiftUI patterns, Firecrawl, config-gc, context-budget, loop-design-check, among others</li>
+			<li><strong>Hooks</strong> — pre-tool-use gates, plus stop and session-end hooks</li>
 		</ul>
+		<div class="gotcha">
+			<strong>The global <code>typescript</code> is pinned to 5.x.</strong> TypeScript 7 (the
+			native rewrite) ships no <code>lib/tsserver.js</code>, and
+			<code>typescript-language-server</code> needs that file as its fallback when a project
+			has no <code>node_modules</code> — so an <code>npm i -g typescript</code> upgrade quietly
+			takes out the language server.
+		</div>
 	</div>
 
 	<div class="grid">
 		<div class="card">
-			<h3>Claude Code</h3>
-			<p>Terminal and desktop agent. Extended with MCP servers and skills.</p>
-		</div>
-		<div class="card">
-			<h3>Codex CLI</h3>
-			<p>Second opinion / rescue passes on stuck work.</p>
+			<h3>Codex CLI + app</h3>
+			<p>Second opinion and rescue passes on stuck work. CLI <code>0.160.1</code> from npm, alongside Codex.app.</p>
 		</div>
 		<div class="card">
 			<h3>Cursor · OpenCode</h3>
-			<p>Editor-side agents for longer refactors.</p>
+			<p>Editor-side agents for longer refactors. OpenCode is both the Homebrew CLI and an app.</p>
+		</div>
+		<div class="card">
+			<h3>Hermes</h3>
+			<p>Agent runtime with a gateway kept alive by a launch agent; CLI lives in <code>~/.local/bin</code>.</p>
 		</div>
 		<div class="card">
 			<h3>Desktop Commander</h3>
 			<p>Persistent shells, REPLs and filesystem access beyond one workspace.</p>
 		</div>
+		<div class="card">
+			<h3>ChatGPT · Claude</h3>
+			<p>Desktop apps for both, next to the CLIs.</p>
+		</div>
+		<div class="card">
+			<h3>Kimi Code</h3>
+			<p>Another CLI agent, installed to <code>~/.kimi-code/bin</code>.</p>
+		</div>
+	</div>
+
+	<div class="card">
+		<h3>Global npm tooling</h3>
+		<div class="tbl"><table>
+			<tr><th>Package</th><th>Why</th></tr>
+			<tr><td><code>@openai/codex</code></td><td>Codex CLI</td></tr>
+			<tr><td><code>firecrawl-cli</code></td><td>Web scraping and search from the shell</td></tr>
+			<tr><td><code>n8n</code></td><td>Workflow automation</td></tr>
+			<tr><td><code>omniroute</code></td><td>Local CLI, config in <code>~/.omniroute</code></td></tr>
+			<tr><td><code>@deepseek-ai/dsh</code></td><td>DeepSeek Harness profiles</td></tr>
+			<tr><td><code>pyright</code></td><td>Python type checking / LSP</td></tr>
+			<tr><td><code>typescript</code> · <code>typescript-language-server</code></td><td>TS 5.9.3 and its LSP</td></tr>
+			<tr><td><code>bash-</code> · <code>yaml-</code> · <code>dockerfile-language-server</code></td><td>Editor intelligence for shell, YAML, Dockerfiles</td></tr>
+		</table></div>
 	</div>
 </section>
 
-<section>
-	<h2>System</h2>
+<section id="languages">
+	<h2>Languages &amp; runtimes</h2>
+
+	<div class="card">
+		<div class="tbl"><table>
+			<tr><th>Toolchain</th><th>Version</th><th>Notes</th></tr>
+			<tr><td>Python</td><td>3.14</td><td>Homebrew; externally managed — see Shell</td></tr>
+			<tr><td>Node</td><td>22.x</td><td>Homebrew, with pnpm</td></tr>
+			<tr><td>Go</td><td>1.27.1</td><td><code>GOPATH/bin</code> is on PATH</td></tr>
+			<tr><td>Rust</td><td>rustup</td><td>stable, 1.93.0 and a pinned 2026-03-01 nightly; rust-analyzer, clippy, miri, wasm-opt in <code>~/.cargo/bin</code></td></tr>
+			<tr><td>Bun</td><td>—</td><td><code>~/.bun</code>, completions sourced in <code>.zshrc</code></td></tr>
+			<tr><td>Swift / Xcode</td><td>—</td><td>Xcode.app installed</td></tr>
+			<tr><td>cmake · portaudio</td><td>—</td><td>Native builds and audio capture</td></tr>
+		</table></div>
+		<div class="gotcha">
+			<strong><code>rustc</code> is not on PATH in a plain shell.</strong> <code>.zshrc</code> has
+			no <code>~/.cargo/bin</code> entry, so <code>rustc: command not found</code> until it is
+			added or called through <code>rustup run</code>.
+		</div>
+	</div>
+</section>
+
+<section id="security">
+	<h2>Security tooling</h2>
+
+	<p class="sub" style="margin-bottom:16px">
+		For authorized testing, CTFs and auditing my own code. Installed by Homebrew or pipx.
+	</p>
+
+	<div class="grid">
+		<div class="card">
+			<h3>Recon</h3>
+			<p><code>nmap</code> <code>masscan</code> <code>naabu</code> <code>amass</code> <code>subfinder</code> <code>dnsx</code> <code>httpx</code> <code>katana</code> <code>theharvester</code> <code>whatweb</code> <code>dnstwist</code> <code>httprobe</code></p>
+		</div>
+		<div class="card">
+			<h3>Web &amp; vuln scanning</h3>
+			<p><code>nuclei</code> <code>nikto</code> <code>gobuster</code> <code>sqlmap</code> <code>wpscan</code> <code>commix</code></p>
+		</div>
+		<div class="card">
+			<h3>Credentials</h3>
+			<p><code>hashcat</code> <code>john</code> <code>hydra</code> <code>medusa</code></p>
+		</div>
+		<div class="card">
+			<h3>Reverse engineering</h3>
+			<p><code>ghidra</code> <code>radare2</code> <code>gdb</code> <code>ldid</code> <code>wireshark</code></p>
+		</div>
+		<div class="card">
+			<h3>Code &amp; supply chain</h3>
+			<p><code>semgrep</code> <code>bandit</code> <code>trivy</code> <code>grype</code> <code>syft</code> <code>hadolint</code></p>
+		</div>
+		<div class="card">
+			<h3>Secret scanning</h3>
+			<p><code>gitleaks</code> <code>trufflehog</code> — run before anything gets pushed.</p>
+		</div>
+	</div>
+</section>
+
+<section id="containers">
+	<h2>Containers &amp; dev utilities</h2>
+
+	<div class="grid">
+		<div class="card">
+			<h3>Colima + Docker</h3>
+			<p>Containers without Docker Desktop. <code>dive</code> inspects image layers.</p>
+		</div>
+		<div class="card">
+			<h3>git · gh</h3>
+			<p>With <code>git-filter-repo</code> for history surgery.</p>
+		</div>
+		<div class="card">
+			<h3>tmux</h3>
+			<p>Sessions that outlive the terminal window.</p>
+		</div>
+		<div class="card">
+			<h3>cliclick</h3>
+			<p>Scripted mouse and keyboard events.</p>
+		</div>
+		<div class="card">
+			<h3>pipx</h3>
+			<p>Isolated Python CLIs, since pip is locked (see Shell).</p>
+		</div>
+		<div class="card">
+			<h3>switchaudio-osx</h3>
+			<p>Audio device switching from the shell (see Audio routing).</p>
+		</div>
+	</div>
+</section>
+
+<section id="media">
+	<h2>Media &amp; 3D</h2>
+
+	<div class="grid">
+		<div class="card">
+			<h3>ffmpeg · ffmpeg-full</h3>
+			<p>Both installed; the full build carries the extra codecs and filters.</p>
+		</div>
+		<div class="card">
+			<h3>OpenSCAD</h3>
+			<p>Snapshot cask, plus the 2021.01 release kept alongside it.</p>
+		</div>
+	</div>
+</section>
+
+<section id="apps">
+	<h2>Apps &amp; system</h2>
 
 	<div class="grid">
 		<div class="card">
@@ -426,30 +606,104 @@ SwitchAudioSource -c -t output              # current</code></pre>
 			<p>Network layer.</p>
 		</div>
 		<div class="card">
-			<h3>Colima + Docker</h3>
-			<p>Containers without Docker Desktop.</p>
+			<h3>Tailscale</h3>
+			<p>Private network between my devices.</p>
+		</div>
+		<div class="card">
+			<h3>Obsidian</h3>
+			<p>Notes vault.</p>
+		</div>
+		<div class="card">
+			<h3>Chrome · Safari</h3>
+			<p>Chrome for daily use; Userscripts for Safari.</p>
+		</div>
+		<div class="card">
+			<h3>TokenTracker</h3>
+			<p>Token usage tracking app, with its own <code>~/.tokentracker</code> cache.</p>
+		</div>
+		<div class="card">
+			<h3>Steam · Roblox</h3>
+			<p>Games.</p>
 		</div>
 	</div>
+</section>
+
+<section id="services">
+	<h2>Background services</h2>
 
 	<div class="card">
-		<h3>Shell</h3>
-		<p>zsh, with PATH assembled in <code>.zshrc</code>:</p>
+		<p>Per-user launch agents that start at login:</p>
+		<div class="tbl"><table>
+			<tr><th>Agent</th><th>Does</th></tr>
+			<tr><td><code>local.notch-lyrics</code></td><td>The notch lyrics strip</td></tr>
+			<tr><td><code>local.volume-key-bridge</code></td><td>Restores volume keys under a Multi-Output Device (see Things I built)</td></tr>
+			<tr><td><code>ai.hermes.gateway</code></td><td>Hermes gateway, logging to <code>~/.hermes/logs</code></td></tr>
+			<tr><td><code>local.codegraph.viewer.server</code></td><td>Code graph viewer on port 8787</td></tr>
+			<tr><td><code>io.sideloadly.daemon</code></td><td>Sideloadly background helper</td></tr>
+			<tr><td><code>com.valvesoftware.steamclean</code></td><td>Steam's <code>steamclean</code> helper</td></tr>
+			<tr><td><code>com.google.keystone.*</code></td><td>Chrome updater</td></tr>
+		</table></div>
+	</div>
+</section>
+
+<section id="shell">
+	<h2>Shell</h2>
+
+	<div class="card">
+		<h3>zsh</h3>
+		<p>PATH is assembled in <code>.zshrc</code>, with aliases <code>python</code> → <code>python3</code> and <code>pip</code> → <code>python3 -m pip</code>:</p>
 		<pre><code>export THEOS=$HOME/theos
 export PATH=$THEOS/bin:$PATH
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="/opt/homebrew/bin:$PATH"</code></pre>
+export PATH="$HOME/.local/bin:$PATH"          # hermes, codex, claude
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="$HOME/.kimi-code/bin:$PATH"
+export PATH="$PATH:$(go env GOPATH)/bin"
+export PATH="$PATH:$HOME/Library/Python/3.14/bin"</code></pre>
 		<div class="gotcha">
 			<strong>Homebrew's Python is externally managed (PEP 668).</strong>
-			<code>pip3 install</code> into it fails by design — every project gets a
-			<code>venv</code>, or it gets <code>pipx</code>.
+			<code>pip3 install</code> into it fails by design — and so does the <code>pip</code>
+			alias above. Every project gets a <code>venv</code>, or it gets <code>pipx</code>.
+		</div>
+		<div class="gotcha">
+			<strong>An API key is exported from <code>.zshrc</code>.</strong> It is not on this
+			page and must not be committed anywhere; anything shared should read from Bitwarden
+			or an untracked env file instead.
+		</div>
+	</div>
+</section>
+
+<section id="projects">
+	<h2>Things I built</h2>
+
+	<div class="grid">
+		<div class="card">
+			<h3>spicetify-audio-bridge</h3>
+			<p>Loopback FFT streamed into the Spotify visualizer. <a href="https://github.com/austinmax323-del/spicetify-audio-bridge">repo</a></p>
+		</div>
+		<div class="card">
+			<h3>notch-lyrics</h3>
+			<p>Always-visible synced lyrics under the notch. <a href="https://github.com/austinmax323-del/notch-lyrics">repo</a></p>
+		</div>
+		<div class="card">
+			<h3>airpods-volume</h3>
+			<p>Multi-Output Devices have no master volume in CoreAudio, so the volume keys go dead; this bridge restores them. <a href="https://github.com/austinmax323-del/airpods-volume">repo</a></p>
+		</div>
+		<div class="card">
+			<h3>LateNight</h3>
+			<p>Spicetify theme drawn from my own album covers.</p>
+		</div>
+		<div class="card">
+			<h3>setup</h3>
+			<p>This page. <a href="https://github.com/austinmax323-del/setup">repo</a></p>
 		</div>
 	</div>
 </section>
 
 <footer>
-	Not exhaustive — a few things are deliberately left off this page.
+	Kept off this page on purpose: credentials, private project work, and anything tied to a specific
+	device or account. Last checked against the machine on 2026-10-07.
 </footer>
 
 </div>
