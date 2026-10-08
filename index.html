@@ -213,7 +213,8 @@
 			<li><strong>Marketplace</strong> — browse and install extensions, themes, snippets</li>
 			<li><strong>backmusic</strong> — visualizer, patched to run on real audio (below)</li>
 			<li><strong>hide-npv.js</strong> — closes the right-hand Now Playing panel at startup</li>
-			<li><strong>auto-fullscreen-visualizer.js</strong> — opens the visualizer fullscreen when playback starts</li>
+			<li><strong>visualizer-button.js</strong> — the visualizer opens only from its own button (auto-fullscreen retired)</li>
+			<li><strong>starry-fx.js</strong>, <strong>starry-intro.js</strong>, <strong>theme-switcher.js</strong> — the Starry Night build (below)</li>
 		</ul>
 		<div class="gotcha">
 			<strong>After any Spotify update,</strong> <code>spicetify apply</code> silently does
@@ -265,7 +266,48 @@
 	</div>
 
 	<div class="card">
-		<h3>LateNight <span class="tag">theme, mine</span></h3>
+		<h3>Starry Night <span class="tag">current, mine</span></h3>
+		<p>
+			The StarryNight theme pushed until the client stops reading as Spotify. The cover becomes
+			the spinning label of a vinyl record — grooves, dust, a tonearm that drops on play, a glow
+			that pulses on every beat and a progress ring you can click to seek. Behind it, a night sky
+			with 25 live-switchable schemes (one re-colours from each cover), warp streaks on skip,
+			meteor showers on loud sections, and a gold star left in the sky for every liked song.
+			A WebGL startup intro collapses 26k stars into the record before it flies into place.
+			Top bar is a glass dock; type is Big Caslon, Futura and Avenir Next.
+			<a href="https://github.com/austinmax323-del/starry-night-spotify">repo</a>
+		</p>
+		<div class="gotcha">
+			<strong>A WebGL scene that renders nothing, with no errors.</strong> The first
+			<code>requestAnimationFrame</code> timestamp can be a few ms <em>earlier</em> than the
+			<code>performance.now()</code> taken as the start time. The negative elapsed time went into
+			<code>Math.pow(t, 2.2)</code>, which is <code>NaN</code> for a negative base — and one
+			<code>NaN</code> uniform turned every vertex position into <code>NaN</code>. Clamp elapsed time at zero.
+		</div>
+		<div class="gotcha">
+			<strong>Spotify no longer returns artist genres</strong>, so genre-driven effects have nothing
+			to read. <code>Spicetify.getAudioData()</code> still carries the track's tempo, loudness and
+			mode, which is what the sky's "weather" uses instead.
+		</div>
+		<div class="gotcha">
+			<strong>The player loads a 64&nbsp;px cover</strong> (<code>ab67616d00004851</code>), which
+			looks blocky blown up as a record label. Swapping the id segment for
+			<code>ab67616d0000b273</code> gets the 640&nbsp;px image.
+		</div>
+		<div class="gotcha">
+			<strong>Don't animate the theme's stars with <code>animation</code>.</strong> They already
+			run a twinkle animation and the shorthand replaces it. Moving them with the separate
+			<code>translate</code> property keeps the twinkle.
+		</div>
+		<div class="gotcha">
+			<strong><code>spicetify apply</code> prints "error" when nothing is wrong</strong> — its own
+			update check hits GitHub's rate limit. <code>starry-repair.sh</code> ignores that line and instead
+			verifies the installed theme, colour scheme, every extension and the fonts.
+		</div>
+	</div>
+
+	<div class="card">
+		<h3>LateNight <span class="tag">theme, mine — previous</span></h3>
 		<p>
 			A Spicetify color scheme grounded in this library's own covers — channel ORANGE,
 			NOBLE, SPLINTER — rather than a generic dark-and-purple reskin. Near-black with a warm
@@ -689,6 +731,10 @@ export PATH="$PATH:$HOME/Library/Python/3.14/bin"</code></pre>
 		<div class="card">
 			<h3>airpods-volume</h3>
 			<p>Multi-Output Devices have no master volume in CoreAudio, so the volume keys go dead; this bridge restores them. <a href="https://github.com/austinmax323-del/airpods-volume">repo</a></p>
+		</div>
+		<div class="card">
+			<h3>Starry Night</h3>
+			<p>Spotify as a night sky: vinyl player, WebGL intro, effects that react to the music. <a href="https://github.com/austinmax323-del/starry-night-spotify">repo</a></p>
 		</div>
 		<div class="card">
 			<h3>LateNight</h3>
