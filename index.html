@@ -138,6 +138,10 @@
 	.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 
 	.grid .card { margin: 0; }
+	.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin: 14px 0 6px; }
+	.shots figure { margin: 0; }
+	.shots img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid rgba(255,255,255,.08); }
+	.shots figcaption { font-size: 12px; opacity: .65; margin-top: 4px; }
 
 	footer {
 		margin-top: 64px;
@@ -277,6 +281,14 @@
 			Top bar is a glass dock; type is Big Caslon, Futura and Avenir Next.
 			<a href="https://github.com/austinmax323-del/starry-night-spotify">repo</a>
 		</p>
+		<div class="shots">
+			<figure><a href="img/starry/home.jpg"><img src="img/starry/home.jpg" alt="Home page with the vinyl player and glass dock" loading="lazy"></a><figcaption>Home</figcaption></figure>
+			<figure><a href="img/starry/liked-songs.jpg"><img src="img/starry/liked-songs.jpg" alt="Liked Songs with the Big Caslon title" loading="lazy"></a><figcaption>Liked Songs</figcaption></figure>
+			<figure><a href="img/starry/cinema.jpg"><img src="img/starry/cinema.jpg" alt="Cinema mode: sky, giant record and title" loading="lazy"></a><figcaption>Cinema mode</figcaption></figure>
+			<figure><a href="img/starry/schemes.jpg"><img src="img/starry/schemes.jpg" alt="Palette menu with schemes and effect switches" loading="lazy"></a><figcaption>Schemes + effect switches</figcaption></figure>
+			<figure><a href="img/starry/intro-converge.jpg"><img src="img/starry/intro-converge.jpg" alt="Startup intro: stars converging" loading="lazy"></a><figcaption>Intro — stars converge</figcaption></figure>
+			<figure><a href="img/starry/intro-record.jpg"><img src="img/starry/intro-record.jpg" alt="Startup intro: the record forms with a title card" loading="lazy"></a><figcaption>Intro — the record forms</figcaption></figure>
+		</div>
 		<div class="gotcha">
 			<strong>A WebGL scene that renders nothing, with no errors.</strong> The first
 			<code>requestAnimationFrame</code> timestamp can be a few ms <em>earlier</em> than the
