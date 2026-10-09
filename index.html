@@ -277,7 +277,7 @@
 			that pulses on every beat and a progress ring you can click to seek. Behind it, a night sky
 			with 25 live-switchable schemes (one re-colours from each cover), warp streaks on skip,
 			meteor showers on loud sections, and a gold star left in the sky for every liked song.
-			A WebGL startup intro collapses 26k stars into the record before it flies into place.
+			A WebGL startup intro collapses 26k stars into the record before it flies into place. Your most-liked artists hang in the sky as constellations, the queue opens as a floating glass panel, and <kbd>H</kbd> toggles a clean mode for recording.
 			Top bar is a glass dock; type is Big Caslon, Futura and Avenir Next.
 			<a href="https://github.com/austinmax323-del/starry-night-spotify">repo</a>
 		</p>
@@ -315,6 +315,17 @@
 			<strong>Don't animate the theme's stars with <code>animation</code>.</strong> They already
 			run a twinkle animation and the shorthand replaces it. Moving them with the separate
 			<code>translate</code> property keeps the twinkle.
+		</div>
+		<div class="gotcha">
+			<strong>Spotify was the top energy user on the Mac, and the theme was the cause.</strong>
+			The renderer sat at ~109% CPU. Turning off <code>user.css</code> dropped style work from
+			~720&nbsp;ms to ~8&nbsp;ms per second, and bisecting the rules found the culprit: a slow
+			"camera drift" animation on the container holding ~400 stars forced a full-page style recalc
+			every frame (~330&nbsp;ms/s on its own). Smaller costs: a beat value written to <code>:root</code>
+			at 60&nbsp;fps (restyles everything, since custom properties inherit), and a poll reading a hidden
+			panel's <code>innerText</code> (forces style + layout). Fixes: drop the drift, scope the beat
+			variable to a childless glow layer animated by <code>opacity</code>, poll cheap attributes, pause
+			effects in the background and on battery. Result ~109% → ~42% while playing.
 		</div>
 		<div class="gotcha">
 			<strong><code>spicetify apply</code> prints "error" when nothing is wrong</strong> — its own
